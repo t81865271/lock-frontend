@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome - Lock Perfume</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Language button top right -->
+  <button class="lang-button-index" onclick="switchToArabic()">عربي</button>
+  <script>
+    function switchToArabic() {
+      window.location.href = "index-ar.html"; // Make sure this file exists!
+    }
+  </script>
+
+  <!-- Video background -->
+  <div class="video-container">
+    <video autoplay muted loop playsinline>
+      <source src="videos/welcome-video.mp4" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+  </div>
+
+  <!-- Center button -->
+  <div class="overlay-content">
+    <img src="images/logo.png" alt="Lock Logo" class="welcome-logo"/>
+    <a href="home.html" class="shop-now-btn">SHOP NOW!</a>
+  </div>
+
+  <script>
+    function switchLanguage() {
+      window.location.href = 'home-ar.html'; // Link to your Arabic homepage
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lock Perfume - Home</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet"> <!-- Arabic font -->
+</head>
+
+<body>
+
+<header class="universal-header">
+  <a href="home.html" class="header-icon"><img src="images/home.png" alt="Home" /></a>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Lock Logo" />
+  </div>
+
+  <div class="header-right-icons">
+    <button class="lang-button-home" onclick="switchLanguage()">عربي</button>
+
+<script>
+  function switchLanguage() {
+    window.location.href = "home-ar.html";
+  }
+</script>
+
+    
+    <div class="header-cart" onclick="toggleCart()">
+      <img src="images/cart-icon.png" alt="Cart" />
+      <span id="cart-count">0</span>
+    </div>
+  </div>
+</header>
+
+<main class="product-grid">
+  <div class="product-item">
+    <a href="amberna.html"><img src="images/amberna.jpg" alt="Amberna Perfume" /></a>
+    <a href="amberna.html">
+      <h2 data-en="Amberna" data-ar="عنبـرنا">Amberna</h2>
+    </a>
+    <p data-en="14 KWD" data-ar="١٤ دينار">14 KWD</p>
+    <button class="add-to-cart-btn" onclick="addToCart('Amberna', 14)" data-en="Add to Cart" data-ar="أضف إلى السلة">Add to Cart</button>
+  </div>
+
+  <div class="product-item">
+    <a href="sunit.html"><img src="images/sunit.jpg" alt="Sunit Perfume" /></a>
+    <a href="sunit.html">
+      <h2 data-en="Sunit" data-ar="سُنّيت">Sunit</h2>
+    </a>
+    <p data-en="14 KWD" data-ar="١٤ دينار">14 KWD</p>
+    <button class="add-to-cart-btn" onclick="addToCart('Sunit', 14)" data-en="Add to Cart" data-ar="أضف إلى السلة">Add to Cart</button>
+  </div>
+
+  <div class="product-item">
+    <div class="exclusive-sticker" data-en="Exclusive" data-ar="حصري">Exclusive</div>
+    <a href="ramadan.html"><img src="images/ramadanedition.jpg" alt="Ramadan Edition Perfume" /></a>
+    <a href="ramadan.html">
+      <h2 data-en="Ramadan Edition" data-ar="إصدار رمضان">Ramadan Edition</h2>
+    </a>
+    <p data-en="16 KWD" data-ar="١٦ دينار">16 KWD</p>
+    <button class="add-to-cart-btn" onclick="addToCart('Ramadan Edition', 16)" data-en="Add to Cart" data-ar="أضف إلى السلة">Add to Cart</button>
+  </div>
+</main>
+
+<!-- CART PANEL -->
+<div id="cartPanel" class="cart-panel">
+  <div class="cart-header">
+    <h2 data-en="Your cart" data-ar="عربة التسوق">Your cart</h2>
+    <button class="close-btn" onclick="toggleCart()">
+      <img src="images/arrow.jpg" alt="Back" class="arrow-icon">
+    </button>
+  </div>
+
+  <div class="cart-items" id="cartItemsContainer">
+    <p class="empty-cart" data-en="Your cart is empty." data-ar="سلة التسوق فارغة.">Your cart is empty.</p>
+  </div>
+
+  <div class="cart-footer">
+    <div class="subtotal">
+      <span data-en="Subtotal" data-ar="الإجمالي">Subtotal</span>
+      <span id="cartSubtotal">0 KWD</span>
+    </div>
+    <p class="note" data-en="Delivery calculated at checkout" data-ar="يتم احتساب التوصيل عند الدفع">Delivery calculated at checkout</p>
+    <button class="checkout-btn" id="checkoutButton" onclick="goToCheckout()" disabled data-en="Checkout" data-ar="الدفع">Checkout</button>
+  </div>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleCart()"></div>
+<div id="cart-message" class="cart-message"></div>
+
+<script src="cart.js"></script>
+<script src="lang.js"></script> <!-- Language script -->
+</body>
+</html>
