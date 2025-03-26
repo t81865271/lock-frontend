@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout - Lock Perfume</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background: url('images/background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+    }
+    .checkout-container {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 12px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      position: relative;
+    }
+    .return-arrow {
+      font-size: 24px;
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+    }
+    .logo {
+      height: 50px;
+      margin: 0 auto;
+    }
+    h3 {
+      font-weight: 600;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+    .items-summary {
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+    }
+    .checkout-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+    }
+    .checkout-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .checkout-item-details {
+      flex: 1;
+      margin-right: 15px;
+    }
+    .checkout-item-details h4 {
+      margin: 0;
+      font-weight: 500;
+    }
+    .checkout-item-price {
+      font-weight: 600;
+      color: #888;
+    }
+    .promo-section input, .customer-info input, .address-info input, .address-info select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      text-align: right;
+    }
+    .promo-section button, .pay-now-section button {
+      width: 100%;
+      padding: 15px;
+      background-color: #000;
+      color: #fff;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    .promo-section button:hover, .pay-now-section button:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .total-summary {
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .total {
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      min-height: 20px;
+    }
+    #promo-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    #discount-row {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="return-arrow" onclick="goBack()">←</div>
+  <img src="images/logo.png" alt="Lock Perfume Logo" class="logo" />
+  <button class="lang-button-index" onclick="toggleLanguage()">عربي</button>
+</header>
+
+<div class="checkout-container">
+
+  <h3>Items</h3>
+  <section class="items-summary" id="checkout-items"></section>
+
+  <h3>Promo Code</h3>
+  <section class="promo-section">
+    <input type="text" id="promo-code" placeholder="Enter promo code">
+    <button onclick="applyPromo()">Apply</button>
+    <div id="promo-message" class="promo-success"></div>
+  </section>
+
+  <h3>Customer Info</h3>
+  <section class="customer-info">
+    <div id="first-name-error" class="error-message"></div>
+    <input type="text" id="first-name" placeholder="First Name" required />
+
+    <div id="last-name-error" class="error-message"></div>
+    <input type="text" id="last-name" placeholder="Last Name" required />
+
+    <div id="phone-error" class="error-message"></div>
+    <input type="tel" id="phone-number" placeholder="Phone Number" required />
+
+    <div id="email-error" class="error-message"></div>
+    <input type="email" id="email" placeholder="Email" required />
+  </section>
+
+  <h3>Address Info</h3>
+  <section class="address-info">
+    <div id="area-error" class="error-message"></div>
+    <select id="area" onchange="updateDeliveryFee()" required>
+      
+        <optgroup label="Capital Governorate (Asimah)">
+          <option value="Asimah">Abdullah Al-Salem</option>
+          <option value="Asimah">Adailiya</option>
+          <option value="Asimah">Bneid Al-Gar</option>
+          <option value="Asimah">Dasma</option>
+          <option value="Asimah">Dasman</option>
+          <option value="Asimah">Doha</option>
+          <option value="Asimah">Kaifan</option>
+          <option value="Asimah">Kuwait City</option>
+          <option value="Asimah">Mansouriya</option>
+          <option value="Asimah">Mirqab</option>
+          <option value="Asimah">Nuzha</option>
+          <option value="Asimah">Qadsiya</option>
+          <option value="Asimah">Qibla</option>
+          <option value="Asimah">Rawda</option>
+          <option value="Asimah">Salhiya</option>
+          <option value="Asimah">Sharq</option>
+          <option value="Asimah">Shuwaikh</option>
+          <option value="Asimah">Shuwaikh Industrial</option>
+          <option value="Asimah">Shamiya</option>
+          <option value="Asimah">Yarmouk</option>
+        </optgroup>
+      
+        <optgroup label="Hawalli Governorate">
+          <option value="Hawalli">Bayan</option>
+          <option value="Hawalli">Hateen</option>
+          <option value="Hawalli">Hawalli</option>
+          <option value="Hawalli">Jabriya</option>
+          <option value="Hawalli">Maidan Hawalli</option>
+          <option value="Hawalli">Mishref</option>
+          <option value="Hawalli">Rumaithiya</option>
+          <option value="Hawalli">Salmiya</option>
+          <option value="Hawalli">Salwa</option>
+          <option value="Hawalli">Shaab</option>
+          <option value="Hawalli">Zahra</option>
+        </optgroup>
+      
+        <optgroup label="Farwaniya Governorate">
+          <option value="Farwaniya">Abbasiya</option>
+          <option value="Farwaniya">Abraq Khaitan</option>
+          <option value="Farwaniya">Ardiya</option>
+          <option value="Farwaniya">Dajeej</option>
+          <option value="Farwaniya">Farwaniya</option>
+          <option value="Farwaniya">Jleeb Al-Shuyoukh</option>
+          <option value="Farwaniya">Khaitan</option>
+          <option value="Farwaniya">Omariya</option>
+          <option value="Farwaniya">Rabiya</option>
+          <option value="Farwaniya">Riggae</option>
+          <option value="Farwaniya">South Khaitan</option>
+        </optgroup>
+      
+        <optgroup label="Ahmadi Governorate">
+          <option value="Ahmadi">Abu Halifa</option>
+          <option value="Ahmadi">Ahmadi</option>
+          <option value="Ahmadi">Egaila</option>
+          <option value="Ahmadi">Fahaheel</option>
+          <option value="Ahmadi">Fintas</option>
+          <option value="Ahmadi">Hadiya</option>
+          <option value="Ahmadi">Mahboula</option>
+          <option value="Ahmadi">Mangaf</option>
+          <option value="Ahmadi">Riqqa</option>
+          <option value="Ahmadi">Sabahiya</option>
+          <option value="Ahmadi">Sabhan</option>
+        </optgroup>
+      
+        <optgroup label="Mubarak Al-Kabeer Governorate">
+          <option value="Mubarak">Abu Al Hasaniya</option>
+          <option value="Mubarak">Adan</option>
+          <option value="Mubarak">Al-Qurain</option>
+          <option value="Mubarak">Fnaitees</option>
+          <option value="Mubarak">Messila</option>
+          <option value="Mubarak">Mubarak Al-Kabeer</option>
+          <option value="Mubarak">Sabah Al-Salem</option>
+          <option value="Mubarak">South Wista</option>
+        </optgroup>
+      
+        <optgroup label="Jahra Governorate">
+          <option value="Jahra">Al Jahra</option>
+          <option value="Jahra">Al Naeem</option>
+          <option value="Jahra">Al Oyoun</option>
+          <option value="Jahra">North West Sulaibikhat</option>
+          <option value="Jahra">Qasr</option>
+          <option value="Jahra">Saad Al Abdullah</option>
+          <option value="Jahra">Sulaibiya</option>
+          <option value="Jahra">Waha</option>
+        </optgroup>
+      </select>
+
+    <div id="block-error" class="error-message"></div>
+    <input type="text" id="block" placeholder="Block" required />
+
+    <div id="street-error" class="error-message"></div>
+    <input type="text" id="street" placeholder="Street" required />
+
+    <input type="text" id="jadda" placeholder="Jadda" />
+    <div id="house-error" class="error-message"></div>
+    <input type="text" id="house" placeholder="House Number" required />
+
+    <input type="text" id="building" placeholder="Building" />
+    <input type="text" id="floor" placeholder="Floor" />
+    <input type="text" id="apartment" placeholder="Apartment" />
+  </section>
+
+  <h3>Summary</h3>
+  <section class="total-summary">
+    <div class="summary-row"><span>Subtotal</span><span id="subtotal">0.000 KWD</span></div>
+    <div class="summary-row"><span>Delivery Fee</span><span id="delivery-fee">0.000 KWD</span></div>
+    <div class="summary-row" id="discount-row"><span>Discount</span><span id="discount">0.000 KWD</span></div>
+    <div class="summary-row total"><span>Total</span><span id="total">0.000 KWD</span></div>
+  </section>
+
+  <div class="pay-now-section">
+    <button onclick="payNow()">Pay Now</button>
+    <div id="loading-overlay" style="display: none;">
+      <div class="spinner"></div>
+      <p>Processing your order, please wait...</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+// Generate or get existing userID
+let userID = localStorage.getItem('userID');
+if (!userID) {
+  userID = 'USER-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
+  localStorage.setItem('userID', userID);
+}
+
+const promoCodes = { "lock10": 10, "lock20": 20, "daffdf": 96 };
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let discountPercentage = 0;
+  let deliveryFee = 0;
+
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbz4goi-bRF-ILo6cn2RlN5tdIzD2ihcMS5HiJbNpGyW7Ekaceo1ZDF5MBtRWiQtgY9b/exec';  // << Replace this with your deployed web app URL
+
+  function displayCheckoutItems() {
+    const container = document.getElementById('checkout-items');
+    container.innerHTML = '';
+    if (cart.length === 0) {
+      container.innerHTML = '<p>Your cart is empty.</p>';
+      return;
+    }
+    cart.forEach(item => {
+      const itemRow = document.createElement('div');
+      itemRow.className = 'checkout-item';
+      const imageName = item.name.toLowerCase().replace(/ /g, '') + '.jpg';
+      itemRow.innerHTML = `
+        <img src="images/${imageName}" alt="${item.name}" />
+        <div class="checkout-item-details"><h4>${item.name}</h4></div>
+        <div class="checkout-item-price">${(item.price * item.quantity).toFixed(3)} KWD</div>`;
+      container.appendChild(itemRow);
+    });
+    updateTotalSummary();
+  }
+
+  function updateDeliveryFee() {
+  const areaDropdown = document.getElementById('area');
+  const governorate = areaDropdown.value;
+  const selectedArea = areaDropdown.options[areaDropdown.selectedIndex].text;
+
+  if (selectedArea.toLowerCase() === 'hateen') {
+    deliveryFee = 0;
+  } else if (governorate === "Asimah" || governorate === "Hawalli" || governorate === "Farwaniya") {
+    deliveryFee = 1;
+  } else {
+    deliveryFee = 2;
+  }
+
+  document.getElementById('delivery-fee').innerText = deliveryFee.toFixed(3) + ' KWD';
+  updateTotalSummary();
+  sendDataToSheet("UNPAID");
+}
+
+
+  function updateTotalSummary() {
+    const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const discount = (discountPercentage / 100) * subtotal;
+    const total = subtotal + deliveryFee - discount;
+    document.getElementById('subtotal').innerText = subtotal.toFixed(3) + ' KWD';
+    document.getElementById('total').innerText = total.toFixed(3) + ' KWD';
+    const discountRow = document.getElementById('discount-row');
+    if (discountPercentage > 0) {
+      discountRow.style.display = 'flex';
+      document.getElementById('discount').innerText = '-' + discount.toFixed(3) + ' KWD';
+    } else {
+      discountRow.style.display = 'none';
+    }
+  }
+
+  function applyPromo() {
+    const promoCodeInput = document.getElementById('promo-code').value.trim().toLowerCase();
+    const promoMessage = document.getElementById('promo-message');
+    if (promoCodes[promoCodeInput]) {
+      discountPercentage = promoCodes[promoCodeInput];
+      promoMessage.innerText = `-${discountPercentage}% discount applied!`;
+    } else {
+      discountPercentage = 0;
+      promoMessage.innerText = 'Invalid promo code.';
+    }
+    updateTotalSummary();
+  }
+
+  function payNow() {
+  const firstName = document.getElementById('first-name').value.trim();
+  const lastName = document.getElementById('last-name').value.trim();
+  const phoneNumber = document.getElementById('phone-number').value.trim();
+  const email = document.getElementById('email').value.trim();
+
+  // Validation
+  document.getElementById('first-name-error').innerText = firstName === '' ? 'Please enter first name.' : '';
+  document.getElementById('last-name-error').innerText = lastName === '' ? 'Please enter last name.' : '';
+  document.getElementById('phone-error').innerText = (phoneNumber.length !== 8 || isNaN(phoneNumber)) ? 'Invalid phone number.' : '';
+  document.getElementById('email-error').innerText = (!email.includes('@')) ? 'Invalid email address.' : '';
+
+  const errors = document.querySelectorAll('.error-message');
+  for (let err of errors) {
+    if (err.innerText !== '') return;
+  }
+
+// Show loading message
+document.getElementById('loading-overlay').style.display = 'flex';
+
+// Gather all data for formData
+const area = document.getElementById('area').options[document.getElementById('area').selectedIndex].text;
+const block = document.getElementById('block').value.trim();
+const street = document.getElementById('street').value.trim();
+const house = document.getElementById('house').value.trim();
+const building = document.getElementById('building').value.trim();
+const floor = document.getElementById('floor').value.trim();
+const apartment = document.getElementById('apartment').value.trim();
+
+const formData = {
+  UserID: userID,
+  FirstName: firstName,
+  LastName: lastName,
+  PhoneNumber: phoneNumber,
+  Email: email,
+  Area: area,
+  Block: block,
+  Street: street,
+  House: house,
+  Building: building,
+  Floor: floor,
+  Apartment: apartment,
+  Status: "UNPAID"
+};
+
+localStorage.setItem('latestFormData', JSON.stringify(formData));
+
+const totalAmount = parseFloat(document.getElementById('total').innerText.split(' ')[0]);
+
+fetch('https://lock-backend.onrender.com/createPayment', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    amount: totalAmount,
+    customerName: firstName + ' ' + lastName,
+    customerEmail: email,
+    phoneNumber: phoneNumber,
+    formData: formData
+  })
+})
+.then(response => response.json())
+.then(data => {
+  if (data.paymentLink) {
+    window.location.href = data.paymentLink;
+  } else {
+    alert('Payment link creation failed.');
+    document.getElementById('loading-overlay').style.display = 'none';
+  }
+})
+.catch(error => {
+  console.error('Error:', error);
+  alert('Something went wrong. Try again.');
+  document.getElementById('loading-message').style.display = 'none';
+});
+
+
+}
+  function goBack() {
+    window.location.href = "index.html";
+  }
+
+  function sendDataToSheet(status = "UNPAID") {
+  const firstName = document.getElementById('first-name').value.trim();
+  const lastName = document.getElementById('last-name').value.trim();
+  const phoneNumber = document.getElementById('phone-number').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const area = document.getElementById('area').options[document.getElementById('area').selectedIndex].text;
+  const block = document.getElementById('block').value.trim();
+  const street = document.getElementById('street').value.trim();
+  const house = document.getElementById('house').value.trim();
+  const building = document.getElementById('building').value.trim();
+  const floor = document.getElementById('floor').value.trim();
+  const apartment = document.getElementById('apartment').value.trim();
+
+  const formData = {
+    UserID: userID,           // This is important for updating the same row
+    FirstName: firstName,
+    LastName: lastName,
+    PhoneNumber: phoneNumber,
+    Email: email,
+    Area: area,
+    Block: block,
+    Street: street,
+    House: house,
+    Building: building,
+    Floor: floor,
+    Apartment: apartment,
+    Status: status
+  };
+  
+  fetch('https://script.google.com/macros/s/AKfycbz4goi-bRF-ILo6cn2RlN5tdIzD2ihcMS5HiJbNpGyW7Ekaceo1ZDF5MBtRWiQtgY9b/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(() => console.log('Data sent to Google Sheet'))
+  .catch(error => console.error('Error!', error.message));
+}
+
+// Automatically send data when a user leaves a field (input/select)
+document.querySelectorAll('input, select').forEach(el => {
+  el.addEventListener('blur', () => sendDataToSheet("UNPAID"));
+});
+
+  const trackedFields = [
+  'first-name',
+  'last-name',
+  'phone-number',
+  'email',
+  'area',
+  'block',
+  'street',
+  'jadda',
+  'house',
+  'building',
+  'floor',
+  'apartment'
+];
+
+trackedFields.forEach(id => {
+  const field = document.getElementById(id);
+  if (field) {
+    field.addEventListener('blur', () => {
+      sendDataToSheet("UNPAID");
+    });
+  }
+});
+
+  displayCheckoutItems();
+
+</script>
+<script>
+  function toggleLanguage() {
+    const currentLang = document.documentElement.lang;
+    if (currentLang === 'ar') {
+      window.location.href = 'checkout.html';
+    } else {
+      window.location.href = 'checkout-ar.html';
+    }
+  }
+  </script>
+<script src="script.js"></script>
+</body>
+</html>
