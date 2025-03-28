@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thank You - Lock Perfume</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    body {
+      background: #fff;
+      font-family: 'Lato', sans-serif;
+      text-align: center;
+      padding: 60px 20px;
+      color: #333;
+    }
+    img {
+      max-width: 120px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #000;
+    }
+    p {
+      font-size: 18px;
+      margin-bottom: 40px;
+    }
+    .details-box {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 25px;
+      max-width: 500px;
+      margin: 0 auto 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      text-align: left;
+    }
+    .details-box h3 {
+      margin-top: 0;
+      font-size: 20px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      color: #D4AF37;
+    }
+    .details-box p {
+      font-size: 16px;
+      margin: 6px 0;
+    }
+    a {
+      margin-top: 10px;
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: black;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+    a:hover {
+      background-color: #333;
+    }
+  </style>
+  <script>
+    (function() {
+      emailjs.init("1IuVy-XWq3oJQE4td"); // 
+    })();
+  </script>
+</head>
+<body>
+  <img src="images/logo.png" alt="Lock Perfume Logo" />
+  <h1>Thank You for Your Order!</h1>
+  <p>Your payment was successful. We will process your order shortly.</p>
+
+  <div class="details-box" id="order-details" style="display:none;">
+    <h3>Order Details</h3>
+    <p><strong>Name:</strong> <span id="name"></span></p>
+    <p><strong>Phone:</strong> <span id="phone"></span></p>
+    <p><strong>Email:</strong> <span id="email"></span></p>
+    <p><strong>Area:</strong> <span id="area"></span></p>
+    <p><strong>Block:</strong> <span id="block"></span></p>
+    <p><strong>Street:</strong> <span id="street"></span></p>
+    <p><strong>House:</strong> <span id="house"></span></p>
+    <p><strong>Building:</strong> <span id="building"></span></p>
+    <p><strong>Floor:</strong> <span id="floor"></span></p>
+    <p><strong>Apartment:</strong> <span id="apartment"></span></p>
+    <p><strong>Status:</strong> <span id="status"></span></p>
+    <p><strong>Time:</strong> <span id="time"></span></p>
+  </div>
+
+  <a href="index.html">Back to Home</a>
+
+  <script>
+    const expectedToken = 'fddafb@!192837465';
+    const token = new URLSearchParams(window.location.search).get('token');
+
+    if (token === expectedToken) {
+      const formData = JSON.parse(localStorage.getItem('latestFormData'));
+
+      if (formData && formData.Email) {
+        formData.Status = 'PAID';
+        formData.Time = new Date().toLocaleString('en-KW', { timeZone: 'Asia/Kuwait' });
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        formData.OrderDetails = cartItems.map(item => `${item.name} x${item.quantity} (${item.price} KWD)`).join(', ');
+        const totalPaid = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(3);
+        formData.TotalPaid = `${totalPaid} KWD`;
+
+        // Show on screen
+        document.getElementById("order-details").style.display = "block";
+        document.getElementById("name").innerText = formData.FirstName + ' ' + formData.LastName;
+        document.getElementById("phone").innerText = formData.PhoneNumber;
+        document.getElementById("email").innerText = formData.Email;
+        document.getElementById("area").innerText = formData.Area;
+        document.getElementById("block").innerText = formData.Block;
+        document.getElementById("street").innerText = formData.Street;
+        document.getElementById("house").innerText = formData.House;
+        document.getElementById("building").innerText = formData.Building;
+        document.getElementById("floor").innerText = formData.Floor;
+        document.getElementById("apartment").innerText = formData.Apartment;
+        document.getElementById("status").innerText = formData.Status;
+        document.getElementById("time").innerText = formData.Time;
+
+        // 1. Update Google Sheet
+        fetch('https://script.google.com/macros/s/AKfycbz4goi-bRF-ILo6cn2RlN5tdIzD2ihcMS5HiJbNpGyW7Ekaceo1ZDF5MBtRWiQtgY9b/exec', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        // 2. Send Email using EmailJS
+        emailjs.send("service_7tcqk26", "template_7ewuo7k", formData)
+          .then(() => console.log("Email sent successfully"))
+          .catch(err => console.error("Email error:", err));
+
+        // 3. Clear local storage
+        localStorage.removeItem('cart');
+        localStorage.removeItem('latestFormData');
+        localStorage.removeItem('userID');
+      }
+    }
+  </script>
+  <script>
+    const latestFormData = JSON.parse(localStorage.getItem('latestFormData'));
+    if (latestFormData && latestFormData.UserID) {
+      latestFormData.Status = "PAID";
+  
+      fetch("https://script.google.com/macros/s/AKfycbz4goi-bRF-ILo6cn2RlN5tdIzD2ihcMS5HiJbNpGyW7Ekaceo1ZDF5MBtRWiQtgY9b/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(latestFormData)
+      }).then(() => {
+        console.log("Order marked as PAID in Google Sheet.");
+      });
+    }
+  </script>
+</body>
+</html>
