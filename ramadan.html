@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ramadan Edition - Lock Perfume</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="universal-header">
+  <a href="home.html" class="header-icon"><img src="images/home.png" alt="Home" /></a>
+  <div class="header-logo"><img src="images/logo.png" alt="Lock Logo" /></div>
+  <div class="header-right-icons">
+    <button class="lang-button-home" onclick="switchLanguage()">عربي</button>
+    <div class="header-cart" onclick="toggleCart()">
+      <img src="images/cart-icon.png" alt="Cart" />
+      <span id="cart-count">0</span>
+    </div>
+  </div>
+</header>
+
+<script>
+  function switchLanguage() {
+    window.location.href = "ramadan-ar.html";
+  }
+</script>
+
+
+<div class="breadcrumb"><a href="index.html">Home</a> &gt; Ramadan Edition</div>
+
+<main class="product-page">
+  <div class="product-container">
+    <img src="images/ramadanedition.jpg" alt="Ramadan Edition Perfume">
+    <h1 class="product-title">Ramadan Edition</h1>
+    <p class="product-price">16 KWD</p>
+    <hr class="divider">
+    <p class="product-description">A rich blend of saffron and rose, balanced by deep oud for a modern Arabian scent.</p>
+
+    <div class="quantity-section">
+      <label class="quantity-label">Quantity</label>
+      <div class="quantity-box">
+        <button onclick="decreaseQuantity()">−</button>
+        <span id="quantity">1</span>
+        <button onclick="increaseQuantity()">+</button>
+      </div>
+    </div>
+
+    <button class="add-to-cart-btn" onclick="addToCart('Ramadan Edition', 14, quantity)">Add to Cart</button>
+  </div>
+</main>
+
+<div id="cartPanel" class="cart-panel">
+  <div class="cart-header">
+    <h2>Your cart</h2>
+    <button class="close-btn" onclick="toggleCart()">
+      <img src="images/arrow.jpg" alt="Back" class="arrow-icon">
+    </button>
+  </div>
+  <div class="cart-items" id="cartItemsContainer"><p class="empty-cart">Your cart is empty.</p></div>
+  <div class="cart-footer">
+    <div class="subtotal"><span>Subtotal</span><span id="cartSubtotal">0 KWD</span></div>
+    <p class="note">Delivery calculated at checkout</p>
+    <button class="checkout-btn" id="checkoutButton" onclick="goToCheckout()" disabled>Checkout</button>
+  </div>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleCart()"></div>
+<div id="cart-message" class="cart-message"></div>
+
+<script src="cart.js"></script>
+<script>
+  let quantity = 1;
+  const quantitySpan = document.getElementById('quantity');
+
+  function increaseQuantity() {
+    quantity++;
+    quantitySpan.textContent = quantity;
+  }
+
+  function decreaseQuantity() {
+    if (quantity > 1) {
+      quantity--;
+      quantitySpan.textContent = quantity;
+    }
+  }
+</script>
+
+</body>
+</html>
