@@ -8,24 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
 </head>
 
-
-<script>
-  const isSoldOut = true; // Change to false when back in stock
-
-  const addToCartButton = document.querySelector('.add-to-cart-btn');
-  if (isSoldOut && addToCartButton) {
-    addToCartButton.innerText = document.documentElement.lang === 'ar' ? 'نفذت الكمية!' : 'Sold Out!';
-    addToCartButton.style.backgroundColor = '#ccc';
-    addToCartButton.style.cursor = 'not-allowed';
-    addToCartButton.disabled = true;
-    addToCartButton.onclick = null;
-  }
-</script>
-
-
-
-
-
 <body>
 
   <header class="universal-header">
