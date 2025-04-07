@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lock Perfume - Home</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet"> <!-- Arabic font -->
+</head>
+
+<body>
+
+<header class="universal-header">
+  <a href="home.html" class="header-icon"><img src="images/home.png" alt="Home" /></a>
+
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Lock Logo" />
+  </div>
+
+  <div class="header-right-icons">
+    <button class="lang-button-home" onclick="switchLanguage()">عربي</button>
+
+<script>
+  function switchLanguage() {
+    window.location.href = "home-ar.html";
+  }
+</script>
+
+    
+    <div class="header-cart" onclick="toggleCart()">
+      <img src="images/cart-icon.png" alt="Cart" />
+      <span id="cart-count">0</span>
+    </div>
+  </div>
+</header>
+
+<main class="product-grid">
+
+<!-- Amberna -->
+<div class="product-item">
+  <a href="amberna.html"><img src="images/amberna.jpg" alt="Amberna Perfume" /></a>
+  <a href="amberna.html"><h2>Amberna</h2></a>
+  <p>14 KWD</p>
+
+  <!-- if sold out -->
+  <!-- <button class="add-to-cart-btn sold-out" disabled>Sold Out!</button> -->
+
+  <button class="add-to-cart-btn" id="btn-amberna" onclick="addToCart('Amberna', 14)">Add to Cart</button>
+</div>
+
+<!-- Sunit -->
+<div class="product-item">
+  <a href="sunit.html"><img src="images/sunit.jpg" alt="Sunit Perfume" /></a>
+  <a href="sunit.html"><h2>Sunit</h2></a>
+  <p>14 KWD</p>
+  <button class="add-to-cart-btn" id="btn-sunit" onclick="addToCart('Sunit', 14)">Add to Cart</button>
+</div>
+
+<!-- Ramadan -->
+<div class="product-item">
+  <div class="exclusive-sticker">Exclusive</div>
+  <a href="ramadan.html"><img src="images/ramadanedition.jpg" alt="Ramadan Edition Perfume" /></a>
+  <a href="ramadan.html"><h2>Ramadan Edition</h2></a>
+  <p>16 KWD</p>
+  <button class="add-to-cart-btn" id="btn-ramadan" onclick="addToCart('Ramadan Edition', 16)">Add to Cart</button>
+</div>
+
+</main>
+
+<!-- CART PANEL -->
+<div id="cartPanel" class="cart-panel">
+  <div class="cart-header">
+    <h2 data-en="Your cart" data-ar="عربة التسوق">Your cart</h2>
+    <button class="close-btn" onclick="toggleCart()">
+      <img src="images/arrow.jpg" alt="Back" class="arrow-icon">
+    </button>
+  </div>
+
+  <div class="cart-items" id="cartItemsContainer">
+    <p class="empty-cart" data-en="Your cart is empty." data-ar="سلة التسوق فارغة.">Your cart is empty.</p>
+  </div>
+
+  <div class="cart-footer">
+    <div class="subtotal">
+      <span data-en="Subtotal" data-ar="الإجمالي">Subtotal</span>
+      <span id="cartSubtotal">0 KWD</span>
+    </div>
+    <p class="note" data-en="Delivery calculated at checkout" data-ar="يتم احتساب التوصيل عند الدفع">Delivery calculated at checkout</p>
+    <button class="checkout-btn" id="checkoutButton" onclick="goToCheckout()" disabled data-en="Checkout" data-ar="الدفع">Checkout</button>
+  </div>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleCart()"></div>
+<div id="cart-message" class="cart-message"></div>
+
+<script src="cart.js"></script>
+<script src="lang.js"></script> <!-- Language script -->
+
+<script>
+  const stockStatus = {
+    amberna: true,   // false = sold out
+    sunit: true,
+    ramadan: true
+  };
+
+  function updateProductButtons() {
+    Object.entries(stockStatus).forEach(([product, inStock]) => {
+      const btn = document.getElementById(`btn-${product}`);
+      if (btn) {
+        if (!inStock) {
+          btn.innerText = 'Sold Out!';
+          btn.classList.add('sold-out');
+          btn.disabled = true;
+        } else {
+          btn.innerText = 'Add to Cart';
+          btn.classList.remove('sold-out');
+          btn.disabled = false;
+        }
+      }
+    });
+  }
+
+  updateProductButtons();
+</script>
+</body>
+</html>
